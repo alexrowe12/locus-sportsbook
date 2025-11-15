@@ -1,0 +1,122 @@
+[
+  {
+    "id": "265f0188945bb81ec64751571eb724cb",
+    "homeTeam": "Miami Dolphins",
+    "awayTeam": "Washington Commanders",
+    "commenceTime": "2025-11-16T14:30:00Z",
+    "homeOdds": -148,
+    "awayOdds": 124
+  },
+  {
+    "id": "0ae85bbc3711ad0cb94475a40e2364f0",
+    "homeTeam": "Atlanta Falcons",
+    "awayTeam": "Carolina Panthers",
+    "commenceTime": "2025-11-16T18:00:00Z",
+    "homeOdds": -192,
+    "awayOdds": 160
+  },
+  {
+    "id": "96377d2fb55e3cef733cecccdecaed5f",
+    "homeTeam": "Buffalo Bills",
+    "awayTeam": "Tampa Bay Buccaneers",
+    "commenceTime": "2025-11-16T18:00:00Z",
+    "homeOdds": -258,
+    "awayOdds": 210
+  },
+  {
+    "id": "229a5e9ce60dcb344a8cc3c97121154e",
+    "homeTeam": "Minnesota Vikings",
+    "awayTeam": "Chicago Bears",
+    "commenceTime": "2025-11-16T18:00:00Z",
+    "homeOdds": -155,
+    "awayOdds": 130
+  },
+  {
+    "id": "7147476b5d96c0ee874b838de3910ee3",
+    "homeTeam": "Pittsburgh Steelers",
+    "awayTeam": "Cincinnati Bengals",
+    "commenceTime": "2025-11-16T18:00:00Z",
+    "homeOdds": -245,
+    "awayOdds": 200
+  },
+  {
+    "id": "5c06e82838fcfade9adf1e89b8bd3081",
+    "homeTeam": "New York Giants",
+    "awayTeam": "Green Bay Packers",
+    "commenceTime": "2025-11-16T18:00:00Z",
+    "homeOdds": 320,
+    "awayOdds": -410
+  },
+  {
+    "id": "fd2f29289d6437a7c07d4780c5f04936",
+    "homeTeam": "Tennessee Titans",
+    "awayTeam": "Houston Texans",
+    "commenceTime": "2025-11-16T18:00:00Z",
+    "homeOdds": 225,
+    "awayOdds": -278
+  },
+  {
+    "id": "591fd7cff37201a14cbdfbd457592445",
+    "homeTeam": "Jacksonville Jaguars",
+    "awayTeam": "Los Angeles Chargers",
+    "commenceTime": "2025-11-16T18:00:00Z",
+    "homeOdds": 136,
+    "awayOdds": -162
+  },
+  {
+    "id": "91630b9c62640117918fa30d2a62d2db",
+    "homeTeam": "Arizona Cardinals",
+    "awayTeam": "San Francisco 49ers",
+    "commenceTime": "2025-11-16T21:05:00Z",
+    "homeOdds": 145,
+    "awayOdds": -175
+  },
+  {
+    "id": "e926e654cedeb65fcfcc389a5158ef4e",
+    "homeTeam": "Los Angeles Rams",
+    "awayTeam": "Seattle Seahawks",
+    "commenceTime": "2025-11-16T21:05:00Z",
+    "homeOdds": -180,
+    "awayOdds": 150
+  },
+  {
+    "id": "cc60225b5a907bd9ba7c27c23131fc5c",
+    "homeTeam": "Cleveland Browns",
+    "awayTeam": "Baltimore Ravens",
+    "commenceTime": "2025-11-16T21:25:00Z",
+    "homeOdds": 350,
+    "awayOdds": -455
+  },
+  {
+    "id": "96ce7785b0980b03282c7e10d4c58d4a",
+    "homeTeam": "Denver Broncos",
+    "awayTeam": "Kansas City Chiefs",
+    "commenceTime": "2025-11-16T21:25:00Z",
+    "homeOdds": 170,
+    "awayOdds": -205
+  },
+  {
+    "id": "6d209e0e637f3b116ec958e0634f2a02",
+    "homeTeam": "Philadelphia Eagles",
+    "awayTeam": "Detroit Lions",
+    "commenceTime": "2025-11-17T01:20:00Z",
+    "homeOdds": -148,
+    "awayOdds": 124
+  },
+  {
+    "id": "80d04ba917883a6438580ebae9fb0f22",
+    "homeTeam": "Las Vegas Raiders",
+    "awayTeam": "Dallas Cowboys",
+    "commenceTime": "2025-11-18T01:15:00Z",
+    "homeOdds": 160,
+    "awayOdds": -192
+  },
+  {
+    "id": "cd2e0964817c30ad3f5144ea49b55f2b",
+    "homeTeam": "Houston Texans",
+    "awayTeam": "Buffalo Bills",
+    "commenceTime": "2025-11-21T01:15:00Z",
+    "homeOdds": 130,
+    "awayOdds": -155
+  }
+]
