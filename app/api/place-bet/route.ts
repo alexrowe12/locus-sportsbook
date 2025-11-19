@@ -26,11 +26,11 @@ function calculatePayout(stake: number, odds: number): number {
 
 export async function POST(request: Request) {
   try {
-    const { userInput } = await request.json();
+    const { messages } = await request.json();
 
-    if (!userInput) {
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json(
-        { error: 'No input provided' },
+        { error: 'No messages provided' },
         { status: 400 }
       );
     }
@@ -68,7 +68,7 @@ export async function POST(request: Request) {
       `${idx + 1}. ${game.awayTeam} @ ${game.homeTeam} - Away: ${game.awayOdds}, Home: ${game.homeOdds}`
     ).join('\n');
 
-    const systemPrompt = `You are a betting agent. The user wants to place a bet.
+    const systemPrompt = `You are a conversational betting agent helping users place sports bets. Be friendly, concise, and helpful.
 
 Available games:
 ${availableGames}
@@ -76,48 +76,81 @@ ${availableGames}
 Bettor wallet: ${process.env.BETTOR_WALLET_ADDRESS}
 Sportsbook wallet: ${process.env.SPORTSBOOK_WALLET_ADDRESS}
 
-Parse the user's input to determine:
-1. The bet amount in USDC (look for dollar amounts, cents, or USDC amounts. If they say "5 cents" that's 0.05 USDC. If they say "$15" that's 15 USDC)
-2. Which team they want to bet on
-3. Find the corresponding odds
+CONVERSATION GUIDELINES:
+- The user may provide vague betting intentions (e.g., "I want a risky bet" or "I don't believe in the Giants")
+- Ask clarifying questions to gather: which specific game, which team, and how much to bet
+- Be conversational and help guide them to a decision
+- If they mention wanting a "risky" bet, suggest underdogs with positive odds
+- If they mention not believing in a team, confirm they want to bet against that team
+- Keep responses concise and natural
+- NEVER use markdown formatting (**, __, etc.) in your responses
+- NEVER use emojis in your responses
+- Write in plain text only
 
-Then:
-1. Transfer the EXACT bet amount from the bettor wallet to the sportsbook wallet using the available MCP tools
+BETTING RULES:
+- Bet amounts should be in USDC (e.g., "$5" = 5 USDC, "50 cents" = 0.50 USDC)
+- Only place the bet when you have ALL three pieces of information:
+  1. The specific game (e.g., "Patriots @ Giants")
+  2. The team they want to bet on
+  3. The bet amount in USDC
+- IMPORTANT: Only execute the transfer tool AFTER the user explicitly confirms the bet (e.g., "yes", "do it", "place it", "sounds good", "let's do it")
+
+WHEN PLACING A BET:
+Once you have all information AND user confirmation:
+1. Transfer the EXACT bet amount from bettor wallet to sportsbook wallet
 2. Calculate the profit if the bet wins (not including the original stake)
+3. You MUST respond in EXACTLY this format (no markdown, no emojis, no variations):
 
-After completing the transfer, respond in EXACTLY this format (no emojis, no extra text):
-Bet Confirmed! [amount] USDC bet on [team] to win [matchup]. [profit] profit if bet hits.
+Bet Confirmed! [amount] USDC bet on [team] to win [matchup]. [profit] USDC profit if bet hits.
 Transaction ID: [transaction id]
 
-Example:
-Bet Confirmed! 0.15 USDC bet on New York Giants to win Green Bay Packers @ New York Giants. 0.48 USDC profit if bet hits.
+Example confirmation message:
+Bet Confirmed! 5 USDC bet on New York Giants to win Green Bay Packers @ New York Giants. 8.50 USDC profit if bet hits.
 Transaction ID: abc123
 
-User input: "${userInput}"`;
+CRITICAL: When confirming a bet, you must start your response with "Bet Confirmed!" exactly as shown. Do not use any other format or add any extra text before it.
+
+Remember: Be conversational and helpful. Don't place the bet until you have all info AND clear confirmation from the user.`;
+
+    // Build messages array for agent
+    const agentMessages = [
+      { role: 'system' as const, content: systemPrompt },
+      ...messages.map((msg: any) => ({
+        role: msg.role,
+        content: msg.content,
+      })),
+    ];
 
     // Run agent
     const result = await agent.invoke({
-      messages: [{ role: 'user', content: systemPrompt }],
+      messages: agentMessages,
     });
 
     // Extract the final message from agent
     const finalMessage = result.messages[result.messages.length - 1];
     const agentResponse = finalMessage.content;
 
-    // Try to extract bet amount from response
-    const amountMatch = agentResponse.match(/(\d+\.?\d*)\s*USDC/i);
-    const betAmount = amountMatch ? parseFloat(amountMatch[1]) : null;
+    // Check if a bet was placed (contains "Bet Confirmed" and transaction ID)
+    const betPlaced = agentResponse.includes('Bet Confirmed!') && agentResponse.includes('Transaction ID:');
+
+    // Try to extract bet amount from response if bet was placed
+    let betAmount = null;
+    if (betPlaced) {
+      const amountMatch = agentResponse.match(/(\d+\.?\d*)\s*USDC/i);
+      betAmount = amountMatch ? parseFloat(amountMatch[1]) : null;
+    }
 
     return NextResponse.json({
       success: true,
       response: agentResponse,
+      betPlaced: betPlaced,
       betAmount: betAmount,
     });
 
   } catch (error) {
-    console.error('Error placing bet:', error);
+    console.error('Error in betting conversation:', error);
     return NextResponse.json(
-      { error: 'Failed to place bet. Please try again.' },
+      { error: 'Failed to process request. Please try again.' },
       { status: 500 }
     );
   }
